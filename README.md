@@ -71,7 +71,9 @@ What we would like you to contribute here are as follows:
 
 ### 5. References
 [1] Huang, Wei, et al. "testRNN: Coverage-guided Testing on Recurrent Neural Networks." arXiv preprint arXiv:1906.08557 (2019).
+
 [2] Gu, Xiaodong, Hongyu Zhang, and Sunghun Kim. "Deep code search." 2018 IEEE/ACM 40th International Conference on Software Engineering (ICSE). IEEE, 2018.
+
 [3] Zhao, Gang, and Jeff Huang. "Deepsim: deep learning code functional similarity." Proceedings of the 2018 26th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering. 2018.
 
 
