@@ -3,6 +3,8 @@ from nltk.corpus import wordnet
 import wordninja
 
 def word_synonym_replacement(word):
+    if len(word) <=3:
+        return word + '_new'
     word_set = wordninja.split(word)
     while True:
         if word_set == []:
@@ -18,10 +20,13 @@ def word_synonym_replacement(word):
         word_ret = word_ret + syn.lemma_names()
         if word_tar in word_ret:
             word_ret.remove(word_tar)
+    try:
+        word_new = random.choice(word_ret)
+    except:
+        word_new = word
+    # word_new = random.choice(word_ret)
 
-    word_new = random.choice(word_ret)
-
-    return word.replace(word_tar,word_new)
+    return word.replace(word_tar,word_new),word_ret
 
 def extract_method_name(string):
     match_ret = re.search('\w+\s*\(',string)
@@ -32,10 +37,15 @@ def extract_method_name(string):
         return None
 
 def extract_argument(string):
-    end_pos    = string.find(')')
+    end_pos    = string.find('{')
     sta_pas    = string.find('(')
-    arguments  = string[sta_pas + 1 :end_pos]
-    return arguments
+    arguments  = string[sta_pas + 1 :end_pos].strip()[:-1]
+    arguments_list = arguments.split(',')
+    if ' ' in arguments_list:
+        arguments_list.remove(' ')
+    if '' in arguments_list:
+        arguments_list.remove('')
+    return arguments_list
 
 def extract_brace(string,start_pos):
     length = 0
@@ -53,7 +63,6 @@ def extract_brace(string,start_pos):
 
 '''
 def extract_import(string):
-
     import_list = re.findall('import .+;',string)
     return import_list,string
 '''
@@ -110,7 +119,22 @@ def extract_for_loop(string):
             string = string.replace(for_text, '')
         else:
             break
-    return for_list, string
+    return for_list
+
+def extract_if(string):
+
+    if_list = []
+    while True:
+        match_ret = re.search('if\s+\(', string)
+        if match_ret:
+            if_head = match_ret.group()
+            start_pos = string.find(if_head)
+            if_text = extract_brace(string, start_pos)
+            if_list.append(if_text)
+            string = string.replace(if_text, '')
+        else:
+            break
+    return if_list
 
 def extract_while_loop(string):
 
@@ -138,6 +162,3 @@ def extract_local_variable(string):
             local_var_list.append(var_definition.split(' ')[1])
 
     return local_var_list
-
-#if __name__ == '__main__':
-#    print(word_synonym_replacement('dtoList'))
