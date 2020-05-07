@@ -103,9 +103,11 @@ if __name__ == '__main__':
     collect_java_files('/home/lizhuo/DeepSBST/code2seq/data/example')
     raw_data = extract_method_from_java()
     input = convert_raw_data_to_input(raw_data,config)
-
+    print('########################################################')
+    print(raw_data)
+    print('########################################################')
     print(input)
-    print(filelist)
+    print('########################################################')
     '''
     
     
