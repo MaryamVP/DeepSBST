@@ -95,7 +95,7 @@ def extract_function(string):
 
     function_list = []
     while True:
-        match_ret = re.search('(private|public).+{', string)
+        match_ret = re.search('(private|public).+\s*{', string)
         if match_ret:
             function_head = match_ret.group()
             start_pos = string.find(function_head)
