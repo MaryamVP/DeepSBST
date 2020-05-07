@@ -100,7 +100,7 @@ if __name__ == '__main__':
 
     #data processing
     print('initialize data')
-    collect_java_files('/Users/lizhuo/code2seq/data/example')
+    collect_java_files('/home/lizhuo/DeepSBST/code2seq/data/example')
     raw_data = extract_method_from_java()
     input = convert_raw_data_to_input(raw_data,config)
 
