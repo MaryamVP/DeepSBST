@@ -52,6 +52,18 @@ def convert_raw_data_to_input(raw_data,config):
             input[key].append(convert_method_to_input(method,config))
     return input
 
+
+def save_refactored_data(raw_date, new_raw_data):
+    for key in new_raw_data.keys():
+        with open(key, 'r') as file:
+            filetext = file.read()
+
+        for i in range(len(new_raw_data[key])):
+            filetext = filetext.replace(raw_date[i],new_raw_data[i])
+
+        with open(key.replace('.java','_new.java'), 'w') as file:
+            file.write(filetext)
+
 def parse_args():
     parser = ArgumentParser()
     parser.add_argument("-d", "--data", dest="data_path",
@@ -70,10 +82,6 @@ def parse_args():
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--seed', type=int, default=239)
     return parser.parse_args()
-
-
-
-
 
 if __name__ == '__main__':
     chunk_size = 20
@@ -100,24 +108,26 @@ if __name__ == '__main__':
 
     #data processing
     print('initialize data')
-    collect_java_files('/home/lizhuo/DeepSBST/code2seq/data/example')
+    data_path  = 'data/example'
+    collect_java_files(data_path)
     raw_data = extract_method_from_java()
     input = convert_raw_data_to_input(raw_data,config)
-    print('########################################################')
+
+    #every java file as an individual
     print(raw_data)
-    print('########################################################')
     print(input)
-    print('########################################################')
-    '''
     
-    
+
+    new_raw_data = {}
+
     #refactoring
-    for key in input:
-        refactored_mn = TestSuiteGenerator.generateTestSuite(model, input[key], raw_data[key], chunk_size, gen, mutation_rate)
-        raw_data[key] = refactored_mn
+    print('start to do the refactoring and generate adverisal samples')
+    for key in input.keys():
+        new_raw_data[key] = []
+        refactored_method = TestSuiteGenerator.generateTestSuite(model, input[key], raw_data[key], 10, mutation_rate = 0.1)
+        new_raw_data[key].append(refactored_method)
+        print('#################raw:###################\n',raw_data[key])
+        print('################new_raw:################\n',new_raw_data[key])
 
-
-    #retrain and valuate the model
-    #os.system('sh train.sh')
-    '''
-
+    #save the new data
+    #save_refactored_data(raw_data,new_raw_data)
