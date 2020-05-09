@@ -82,16 +82,11 @@ def enhance_for_loop(method_string):
         return method_string
 
 def add_print(method_string):
-    statement_list = method_string.split('\n')
-    while True:
-        mutation_index = random.randint(2, len(statement_list) - 1)
-        if ';' in statement_list[mutation_index]:
-            break
-    new_statement = '\t' + 'System.out.println("' + str(random.choice(word_synonym_replacement(statement_list[mutation_index])[1])) + '");'
-    statement_list.insert(mutation_index + 1 ,new_statement)
-    method_string = ''
-    for statement in statement_list:
-        method_string = method_string + statement + '\n'
+    statement_list = method_string.split(';')
+    mutation_index = random.randint(1, len(statement_list) - 1)
+    statement      = statement_list[mutation_index]
+    new_statement  = '\t' + 'System.out.println("' + str(random.choice(word_synonym_replacement(statement)[1])) + '");'
+    method_string = method_string.replace(statement, '\n' + new_statement + '\n' + statement)
     return method_string
 
 def enhance_if(method_string):
