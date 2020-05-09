@@ -71,8 +71,8 @@ def mutation(method):
 
 
 def GA(generation_number, current_gen, current_raw, current_coverage, number_of_elites, mutation_rate, nctoe):
-    print(current_gen)
     next_gen = []
+    next_raw = []
     changed_index = []
     temp_coverage = []
 
@@ -82,6 +82,7 @@ def GA(generation_number, current_gen, current_raw, current_coverage, number_of_
 
         for list_index in sorted_coverage[:number_of_elites]:
             next_gen.append(current_gen[list_index])
+            next_raw.append(current_raw[list_index])
 
         for k, list_index in enumerate(sorted_coverage[number_of_elites:]):
             rand = random.random()
@@ -93,9 +94,11 @@ def GA(generation_number, current_gen, current_raw, current_coverage, number_of_
 
                 if check_duplicate(mutated_input, current_gen[list_index]):
                     next_gen.append(current_gen[list_index])
+                    next_raw.append(current_raw[list_index])
 
                 else:
                     next_gen.append(current_gen[list_index])
+                    next_raw.append(current_raw[list_index])
                     changed_index.append(list_index)
 
             else:
@@ -106,7 +109,7 @@ def GA(generation_number, current_gen, current_raw, current_coverage, number_of_
             current_coverage[item] = calculate_neuron_coverage(current_gen[item], nctoe)
 
         current_gen = next_gen
-
+        current_raw = next_raw
         changed_index = []
         next_gen = []
 
@@ -117,18 +120,18 @@ def GA(generation_number, current_gen, current_raw, current_coverage, number_of_
     return mutated_input
 
 
-def generateTestSuite(model, model_input, raw_input, chunk_size, generation_number, mutation_rate):
-    number_of_elites = int(chunk_size / 10)
+def generateTestSuite(model, model_input, raw_input, generation_number, mutation_rate):
+    number_of_elites = max(1,len(model_input) / 2)
 
     test_input = []
     current_coverage = []
 
-    for i in range(chunk_size):
+    for i in range(len(model_input)):
         test_input.append(np.array(model_input[i]).reshape(1, 6))
 
     nctoe = set_neuron_coverage(model, test_input)
 
-    for i in range(chunk_size):
+    for i in range(len(model_input)):
         print("Current iteration is: ", i)
         current_coverage.append(calculate_neuron_coverage(test_input[i], nctoe))
 
