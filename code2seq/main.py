@@ -114,10 +114,9 @@ if __name__ == '__main__':
     input = convert_raw_data_to_input(raw_data,config)
 
     #every java file as an individual
-    print(raw_data)
-    print(input)
+    print('this is raw data:\n',raw_data)
+    print('this is input data:\n',input)
     
-
     new_raw_data = {}
 
     #refactoring
