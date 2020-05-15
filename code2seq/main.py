@@ -67,14 +67,14 @@ def save_refactored_data(raw_date, new_raw_data):
 def parse_args():
     parser = ArgumentParser()
     parser.add_argument("-d", "--data", dest="data_path",
-                        help="path to preprocessed dataset", required=False)
+                        help="path to preprocessed dataset", required=False, default= './data')
     parser.add_argument("-te", "--test", dest="test_path",
-                        help="path to test file", metavar="FILE", required=False)
+                        help="path to test file", metavar="FILE", required=False, default= './data')
 
     parser.add_argument("-s", "--save_prefix", dest="save_path_prefix",
-                        help="path to save file", metavar="FILE", required=False)
+                        help="path to save file", metavar="FILE", required=False, default= './data')
     parser.add_argument("-l", "--load", dest="load_path",
-                        help="path to saved file", metavar="FILE", required=False)
+                        help="path to saved file", metavar="FILE", required=False, default= './model/models/java-large-model/model_iter52.release')
     parser.add_argument('--release', action='store_true',
                         help='if specified and loading a trained model, release the loaded model for a smaller model '
                              'size.')
@@ -87,8 +87,6 @@ if __name__ == '__main__':
     chunk_size = 20
     gen = 3
     mutation_rate = 0.1
-    model_path = './model/java-large/java-large-model/model_iter52.release.data-00000-of-00001'
-
     ##### Define model ######
     logger.info('Build Model')
 
@@ -104,7 +102,7 @@ if __name__ == '__main__':
 
     model = Model(config)
 
-    print(model.print_hyperparams())
+    #print(model.print_hyperparams())
 
     #data processing
     print('initialize data')
@@ -114,9 +112,14 @@ if __name__ == '__main__':
     input = convert_raw_data_to_input(raw_data,config)
 
     #every java file as an individual
-    print('this is raw data:\n',raw_data)
-    print('this is input data:\n',input)
-    
+    print(len(raw_data))
+    print(len(input))
+
+    if len(raw_data) != len(input):
+        print('the length of raw_data is not equal to input')
+        exit()
+
+
     new_raw_data = {}
 
     #refactoring
@@ -125,8 +128,8 @@ if __name__ == '__main__':
         new_raw_data[key] = []
         refactored_method = TestSuiteGenerator.generateTestSuite(model, input[key], raw_data[key], 10, mutation_rate = 0.1)
         new_raw_data[key].append(refactored_method)
-        print('#################raw:###################\n',raw_data[key])
-        print('################new_raw:################\n',new_raw_data[key])
 
+    print(raw_data)
+    print(new_raw_data)
     #save the new data
     #save_refactored_data(raw_data,new_raw_data)
