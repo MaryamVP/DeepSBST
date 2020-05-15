@@ -112,8 +112,8 @@ if __name__ == '__main__':
     input = convert_raw_data_to_input(raw_data,config)
 
     #every java file as an individual
-    print(len(raw_data))
-    print(len(input))
+    print('raw_data:\n',raw_data)
+    print('input:\n',input)
 
     if len(raw_data) != len(input):
         print('the length of raw_data is not equal to input')
