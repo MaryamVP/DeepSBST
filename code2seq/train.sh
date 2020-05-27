@@ -6,11 +6,11 @@
 #   will be evaluated after each training iteration. If you wish to test
 #   on the final (held-out) test set, change 'val' to 'test'.
 type=java-large-model
-dataset_name=java-small
+dataset_name=1
 data_dir=data
 data=${data_dir}/${dataset_name}
 test_data=${data_dir}/${dataset_name}.val.c2s
-model_dir=models/${type}
+model_dir=model/models/java-large-model/
 
 mkdir -p ${model_dir}
 set -e

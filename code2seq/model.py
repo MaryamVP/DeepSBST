@@ -17,7 +17,14 @@ class Model:
 
     def __init__(self, config):
         self.config = config
-        self.sess = tf.compat.v1.Session()
+        
+	config = tf.ConfigProto()
+
+	config.gpu_options.per_process_gpu_memory_fraction = 0.25
+
+	#session = tf.Session(config=config)
+	
+	self.sess = tf.compat.v1.Session(config=config)
 
         self.eval_queue = None
         self.predict_queue = None
