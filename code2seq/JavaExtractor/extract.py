@@ -28,13 +28,13 @@ def ExtractFeaturesForDir(args, dir, prefix):
                '--dir', dir, '--num_threads', str(args.num_threads)]
 
     # print command
-    # os.system(command)
+    #os.system(command)
     kill = lambda process: process.kill()
     outputFileName = TMP_DIR + prefix + dir.split('/')[-1]
     failed = False
     with open(outputFileName, 'a') as outputFile:
         sleeper = subprocess.Popen(command, stdout=outputFile, stderr=subprocess.PIPE)
-        timer = Timer(60 * 60, kill, [sleeper])
+        timer = Timer(60 * 600, kill, [sleeper])
 
         try:
             timer.start()
@@ -65,7 +65,7 @@ def ExtractFeaturesForDirsList(args, dirs):
     try:
         p = multiprocessing.Pool(6)
         p.starmap(ParallelExtractDir, zip(itertools.repeat(args), dirs))
-        # for dir in dirs:
+        #for dir in dirs:
         #    ExtractFeaturesForDir(args, dir, '')
         output_files = os.listdir(TMP_DIR)
         for f in output_files:
