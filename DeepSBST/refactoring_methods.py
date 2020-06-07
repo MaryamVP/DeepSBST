@@ -36,7 +36,9 @@ def rename_api(method_string):
 def rename_method_name(method_string):
     method_name = extract_method_name(method_string)
     if method_name:
-        return method_string.replace(method_name, word_synonym_replacement(method_name)[0])
+        new_method_name = word_synonym_replacement(method_name)[0]
+        if re.search('\w+',new_method_name):
+            return method_string.replace(method_name, new_method_name)
     else:
         return method_string
 
